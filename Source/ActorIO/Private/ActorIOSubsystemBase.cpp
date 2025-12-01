@@ -437,6 +437,53 @@ void UActorIOSubsystemBase::RegisterNativeFunctionsForObject(AActor* InObject, F
             .SetSubobject(TEXT("AudioComponent0")));
     }
 
+    // In the case of AFMODAmbientSound, we are comparing the class name directly to avoid dependency to FMODStudio module.
+    // Note that this does not support class inheritance, so it only works for exact classes.
+    if(InObject->GetClass()->GetFName() == TEXT("FMODAmbientSound"))
+    {
+        FunctionRegistry.RegisterFunction(FActorIOFunction()
+            .SetId(TEXT("AFMODAmbientSound::Play"))
+            .SetDisplayName(LOCTEXT("FMODAmbientSound.Play", "Play"))
+            .SetTooltipText(LOCTEXT("FMODAmbientSound.PlayTooltip", "Start playing the FMOD sound."))
+            .SetFunction(TEXT("Play"))
+            .SetSubobject(TEXT("FMODAudioComponent0")));
+
+        FunctionRegistry.RegisterFunction(FActorIOFunction()
+            .SetId(TEXT("AFMODAmbientSound::Stop"))
+            .SetDisplayName(LOCTEXT("FMODAmbientSound.Stop", "Stop"))
+            .SetTooltipText(LOCTEXT("FMODAmbientSound.StopTooltip", "Stop playing the FMOD sound."))
+            .SetFunction(TEXT("Stop"))
+            .SetSubobject(TEXT("FMODAudioComponent0")));
+
+        FunctionRegistry.RegisterFunction(FActorIOFunction()
+            .SetId(TEXT("AFMODAmbientSound::Release"))
+            .SetDisplayName(LOCTEXT("FMODAmbientSound.Release", "Release"))
+            .SetTooltipText(LOCTEXT("FMODAmbientSound.Release", "Push the audio out of memory."))
+            .SetFunction(TEXT("Release"))
+            .SetSubobject(TEXT("FMODAudioComponent0")));
+
+        FunctionRegistry.RegisterFunction(FActorIOFunction()
+            .SetId(TEXT("AFMODAmbientSound::SetPaused"))
+            .SetDisplayName(LOCTEXT("FMODAmbientSound.SetPaused", "SetPaused"))
+            .SetTooltipText(LOCTEXT("FMODAmbientSound.SetPausedTooltip", "Pause the FMOD sound. The $paused boolean must be given."))
+            .SetFunction(TEXT("SetPaused"))
+            .SetSubobject(TEXT("FMODAudioComponent0")));
+
+        FunctionRegistry.RegisterFunction(FActorIOFunction()
+            .SetId(TEXT("AFMODAmbientSound::SetVolume"))
+            .SetDisplayName(LOCTEXT("FMODAmbientSound.SetVolume", "SetVolume"))
+            .SetTooltipText(LOCTEXT("FMODAmbientSound.SetVolumeTooltip", "Set the volume of the FMOD sound. A float($volume) between 0-1 must be given."))
+            .SetFunction(TEXT("SetVolume"))
+            .SetSubobject(TEXT("FMODAudioComponent0")));
+
+		FunctionRegistry.RegisterFunction(FActorIOFunction()
+			.SetId(TEXT("AFMODAmbientSound::SetParameter"))
+			.SetDisplayName(LOCTEXT("FMODAmbientSound.SetParameter", "SetParameter"))
+			.SetTooltipText(LOCTEXT("FMODAmbientSound.SetParameterTooltip", "Set a parameter of the FMOD event. A parameter name($Name) and float($Value) value must be given."))
+			.SetFunction(TEXT("SetParameter"))
+			.SetSubobject(TEXT("FMODAudioComponent0")));
+    }
+
     //==================================
     // Volume Actors
     //==================================
